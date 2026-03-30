@@ -15,12 +15,12 @@
 Projeto de Marketplace para empresa **Mr. Nuts** feito pelos membros da **TechFood**, desenvolvida com **Node.js + Express + MySQL**. O projeto foca na negociação de produtos entre usuários (compradores e fornecedores), anúncios de produtos, categorias e avaliações. Além de contar com uma área para Usuários Administradores realizarem a filtragem de quais produtos poderão ser anunciados.
 
 ## Dados do .ENV
-
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_DATABASE=techfood
-DB_PORT=3306
+<br><br>
+DB_HOST=localhost<br>
+DB_USER=root<br>
+DB_PASSWORD=<br>
+DB_DATABASE=techfood<br>
+DB_PORT=3306<br>
 
 ## 🛠 Estrutura de pastas
 
@@ -68,7 +68,7 @@ Nosso banco de dados conta com uma tabela principal que é a tabela de **usuári
 
 ## Detalhamento do Projeto
 
-O projeto foi realizado de forma com que enaltecesse todos e ajudasse a se desenvolver<br>
+O projeto foi realizado de forma com que enaltecesse todos e ajudasse a se desenvolver<br><br>
 Fabrizzio Puttini: Criação do protótipo do site no Figma, finalização do Banco de Dados e do DER no MySQL;<br>
 Guilherme Belcastro: Criação da base do DER do Banco de Dados junto à Julia e exerceu uma função de corretor nas documentações do projeto;<br>
 Luiz Silvestre: Criação do Backend do Projeto - CRUD;<br>
