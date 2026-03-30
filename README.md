@@ -88,7 +88,7 @@ O projeto foi realizado de forma com que enaltecesse todos e ajudasse a se desen
 1. Clone o repositório:
 
 ```sh
-git clone https://github.com/2025-2-MCC1/Projeto1/
+git clone https://github.com/2026-1-MCC2/Projeto1
 ```
 
 2. Crie o banco de dados no MySQL executando o script:
