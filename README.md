@@ -8,37 +8,42 @@
 
 ## Integrantes: <a href="/www.linkedin.com/in/fabrizzio-puttini">Fabrizzio Puttini </a>, <a href="https://www.linkedin.com/in/julia-valério/">Julia Valério</a>, <a href="https://www.linkedin.com/in/lr-s/">Luiz Silvestre</a>, <a href="https://www.linkedin.com/in/guilherme-belcastro-medeiros-785598281/">Guilherme Belcastro </a>,<a href="https://www.linkedin.com/in/kaike-cavalcante-7283a0266/"> Kaike Cavalcante</a> 
 
-## Professores Orientadores: <a href="https://www.linkedin.com/in/adriano-valente-534576135/">Adriano Felix Valente</a>, <a href="https://www.linkedin.com/in/remuniz/">Renata Muniz do Nascimento</a>, <a href="https://www.linkedin.com/404/">Luis Fernando dos Santos Pires</a>, <a href="https://www.linkedin.com/in/victorbarq/">Victor Bruno Alexander Rosetti de Quiroz</a>, <a href="https://www.linkedin.com/404/">Joyce Daniele Tavares</a>
+## Professores Orientadores: <a href="https://www.linkedin.com/in/francisco-escobar/">Francisco Escobar</a>, <a href="https://www.linkedin.com/in/cristina-machado-corr%C3%AAa-leite-630309160/">Cristina Machado Corrêa Leite</a>, <a href="https://www.linkedin.com/in/katia-bossi/">Katia Milani Lara Bossi</a>, <a href="https://www.linkedin.com/in/jesuslisboagomes/">Jésus Gomes</a>, <a href="https://www.linkedin.com/in/dolemes/">David de Oliveira Lemes</a>
 
 ## Descrição
 
-API CRUD completa para a plataforma **TechFood**, desenvolvida com **Node.js + Express + MySQL**. O sistema gerencia usuários (administradores, compradores e fornecedores), anúncios de produtos, categorias e avaliações.
+Projeto de Marketplace para empresa **Mr. Nuts** feito pelos membros da **TechFood**, desenvolvida com **Node.js + Express + MySQL**. O projeto foca na negociação de produtos entre usuários (compradores e fornecedores), anúncios de produtos, categorias e avaliações. Além de contar com uma área para Usuários Administradores realizarem a filtragem de quais produtos poderão ser anunciados.
+
+## Dados do .ENV
+
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_DATABASE=techfood
+DB_PORT=3306
 
 ## 🛠 Estrutura de pastas
 
 <pre>
 |-- Raiz (Projeto1/)
-|
-|-- 📂 Backend
-│   ├── 📂 src
-│   │   ├── 📄 db.js (conexão com o banco de dados)
-│   │   └── 📄 server.js (servidor Express + rotas CRUD)
-│   ├── � .env.example (variáveis de ambiente - modelo)
-│   ├── 📄 package.json
-│   └── 📄 package-lock.json
-│
-|-- 📂 banco de dados
-│   ├── 📄 BD projeto.sql (script de criação do banco e tabelas)
-│   ├── 📄 DER TechFood.mwb (modelo do banco - MySQL Workbench)
-│   └── 📄 DER TechFood.mwb.bak (backup do modelo)
-│
 |-- 📂 Documentos
 │   ├── � Entrega 1
 │   │   ├── Cálculo II
 │   │   ├── Desenvolvimento Web Full Stack
+│   │     |-- 📂 Backend
+│   │         ├── 📂 src
+│   │         ├── 📄 db.js (conexão com o banco de dados)
+│   │         └── 📄 server.js (servidor Express + rotas CRUD)
+│   ├── � .env.example (variáveis de ambiente - modelo)
+│   ├── 📄 package.json
+│   └── 📄 package-lock.json
 │   │   ├── Gestão Empresarial
 │   │   ├── Projeto Web Interdisciplinar
 │   │   └── Projeto em Banco de Dados
+│   │       |-- 📂 banco de dados
+│   │           ├── 📄 BD projeto.sql (script de criação do banco e tabelas)
+│   │           ├── 📄 DER TechFood.mwb (modelo do banco - MySQL Workbench)
+│   │           └── 📄 DER TechFood.mwb.bak (backup do modelo)
 │   └── 📂 Entrega 2
 │       ├── Cálculo II
 │       ├── Desenvolvimento Web Full Stack
@@ -56,6 +61,19 @@ API CRUD completa para a plataforma **TechFood**, desenvolvida com **Node.js + E
 - **`Backend/src/`**: Arquivos principais do servidor — conexão com o banco (`db.js`) e rotas CRUD (`server.js`).
 - **`banco de dados/`**: Script SQL de criação do banco e tabelas, além do modelo DER (MySQL Workbench).
 - **`Documentos/`**: Documentação do projeto, organizada por entregas e disciplinas.
+
+## Informações sobre o MySQL
+
+Nosso banco de dados conta com uma tabela principal que é a tabela de **usuários**, as tabelas de **administradores, fornecedores e clientes** tem conexão direta com a tabela usuário, servindo para definir qual será o tipo de usuário na tabela. Além disso tem as tabelas **anuncio e categoriaProduto**, fazem ligação direta com a tabela **fornecedor**, elas servem para guardar os anúncios feitos pelos fornecedores com todos os dados de cada um. Nosso banco também conta om uma tabela avaliação que será responsável por armazenar as notas que os clientes dão aos produtos dos anúncios. 
+
+## Detalhamento do Projeto
+
+O projeto foi realizado de forma com que enaltecesse todos e ajudasse a se desenvolver
+Fabrizzio Puttini: Criação do protótipo do site no Figma, finalização do Banco de Dados e do DER no MySQL;
+Guilherme Belcastro: Criação da base do DER do Banco de Dados junto à Julia e exerceu uma função de corretor nas documentações do projeto;
+Luiz Silvestre: Criação do Backend do Projeto - CRUD;
+Julia Valério: Criação da base do DER do Banco de Dados junto ao Guilherme e criação da documentação de Gestão Empresarial;
+Kaike Santos: Criação do Backlog e documentação à respeito do projeto, além da documentação de Cálculo II;
 
 ## 💻 Configuração para Desenvolvimento
 
