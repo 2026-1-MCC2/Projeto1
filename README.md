@@ -68,12 +68,12 @@ Nosso banco de dados conta com uma tabela principal que é a tabela de **usuári
 
 ## Detalhamento do Projeto
 
-O projeto foi realizado de forma com que enaltecesse todos e ajudasse a se desenvolver
-Fabrizzio Puttini: Criação do protótipo do site no Figma, finalização do Banco de Dados e do DER no MySQL;
-Guilherme Belcastro: Criação da base do DER do Banco de Dados junto à Julia e exerceu uma função de corretor nas documentações do projeto;
-Luiz Silvestre: Criação do Backend do Projeto - CRUD;
-Julia Valério: Criação da base do DER do Banco de Dados junto ao Guilherme e criação da documentação de Gestão Empresarial;
-Kaike Santos: Criação do Backlog e documentação à respeito do projeto, além da documentação de Cálculo II;
+O projeto foi realizado de forma com que enaltecesse todos e ajudasse a se desenvolver<br>
+Fabrizzio Puttini: Criação do protótipo do site no Figma, finalização do Banco de Dados e do DER no MySQL;<br>
+Guilherme Belcastro: Criação da base do DER do Banco de Dados junto à Julia e exerceu uma função de corretor nas documentações do projeto;<br>
+Luiz Silvestre: Criação do Backend do Projeto - CRUD;<br>
+Julia Valério: Criação da base do DER do Banco de Dados junto ao Guilherme e criação da documentação de Gestão Empresarial;<br>
+Kaike Santos: Criação do Backlog e documentação à respeito do projeto, além da documentação de Cálculo II;<br>
 
 ## 💻 Configuração para Desenvolvimento
 
