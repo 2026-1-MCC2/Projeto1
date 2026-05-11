@@ -21,8 +21,6 @@ export default function Navbar() {
     }`;
 
   const isAdmin = user?.tipoUsuario === 1;
-  const isComprador = user?.tipoUsuario === 2;
-  const isFornecedor = user?.tipoUsuario === 3;
 
   return (
     <nav className="bg-brand-900 text-white">
@@ -41,19 +39,6 @@ export default function Navbar() {
             </NavLink>
           </>
         )}
-
-        {isComprador && (
-          <NavLink to="/compras" className={linkClass}>
-            Histórico de Compras
-          </NavLink>
-        )}
-
-        {isFornecedor && (
-          <NavLink to="/loja" className={linkClass}>
-            Minha Loja
-          </NavLink>
-        )}
-
         <NavLink to="/perfil" className={linkClass}>
           Perfil
         </NavLink>

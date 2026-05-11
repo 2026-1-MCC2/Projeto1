@@ -26,10 +26,8 @@ export default function LoginPage() {
       toast.success('Bem-vindo!');
       if (data.user.tipoUsuario === 1) {
         navigate('/usuarios');
-      } else if (data.user.tipoUsuario === 2 || data.user.tipoUsuario === 3) {
-        navigate('/perfil');
       } else {
-        navigate('/');
+        navigate('/perfil');
       }
     } catch (err) {
       const msg = err.response?.data?.error || 'Erro ao fazer login';
