@@ -17,7 +17,6 @@ import HomePage from './pages/HomePage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
 import CartPage from './pages/CartPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
-import SupplierDashboardPage from './pages/SupplierDashboardPage.jsx';
 
 function AdminLayout({ children }) {
   return (
@@ -110,11 +109,13 @@ export default function App() {
 
               {/* Supplier Dashboard */}
               <Route
-                path="/fornecedor/dashboard"
+                path="/perfil"
                 element={
-                  <SupplierRoute>
-                    <SupplierDashboardPage />
-                  </SupplierRoute>
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <PerfilPage />
+                    </AdminLayout>
+                  </ProtectedRoute>
                 }
               />
 
