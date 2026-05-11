@@ -12,6 +12,7 @@ export async function getProdutos(req, res) {
         a.estoque,
         a.ativo,
         a.dataCriacao,
+        a.imagem,
         u.nomeUsuario as fornecedor,
         c.idCategoria
       FROM anuncio a
@@ -43,6 +44,7 @@ export async function getProdutoById(req, res) {
         a.estoque,
         a.ativo,
         a.dataCriacao,
+        a.imagem,
         u.nomeUsuario as fornecedor
       FROM anuncio a
       LEFT JOIN categoriaProduto c ON a.idCategoria = c.idCategoria
@@ -65,6 +67,7 @@ export async function getProdutoById(req, res) {
 export async function createProduto(req, res) {
   const { idCategoria, titulo, descricao, preco, estoque } = req.body;
   const idUsuario = req.user?.idUsuario;
+  const imagem = req.file?.filename;
 
   if (!idCategoria || !titulo || preco === undefined) {
     return res.status(400).json({ error: 'Campos obrigatórios: idCategoria, titulo, preco' });
@@ -88,8 +91,8 @@ export async function createProduto(req, res) {
     const idFornecedor = fornecedorRows[0].idFornecedor;
 
     await pool.query(
-      'INSERT INTO anuncio (idFornecedor, idCategoria, titulo, descricao, preco, estoque) VALUES (?, ?, ?, ?, ?, ?)',
-      [idFornecedor, idCategoria, titulo, descricao || null, preco, estoque || 0]
+      'INSERT INTO anuncio (idFornecedor, idCategoria, titulo, descricao, preco, estoque, imagem) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [idFornecedor, idCategoria, titulo, descricao || null, preco, estoque || 0, imagem || null]
     );
     res.status(201).json({ mensagem: 'Produto criado com sucesso' });
   } catch (err) {

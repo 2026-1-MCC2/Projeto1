@@ -62,7 +62,7 @@ export default function SupplierDashboardPage() {
       fd.append('preco', parseFloat(formData.preco));
       fd.append('estoque', parseInt(formData.estoque) || 0);
       if (imagem) {
-        fd.append('img', imagem);
+        fd.append('imagem', imagem);
       }
 
       const response = await fetch('http://localhost:3000/api/produtos', {
