@@ -19,6 +19,7 @@ export default function SupplierDashboardPage() {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
+  const [imagem, setImagem] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -54,19 +55,22 @@ export default function SupplierDashboardPage() {
     }
 
     try {
+      const fd = new FormData();
+      fd.append('idCategoria', parseInt(formData.idCategoria));
+      fd.append('titulo', formData.titulo);
+      fd.append('descricao', formData.descricao);
+      fd.append('preco', parseFloat(formData.preco));
+      fd.append('estoque', parseInt(formData.estoque) || 0);
+      if (imagem) {
+        fd.append('img', imagem);
+      }
+
       const response = await fetch('http://localhost:3000/api/produtos', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({
-          idCategoria: parseInt(formData.idCategoria),
-          titulo: formData.titulo,
-          descricao: formData.descricao,
-          preco: parseFloat(formData.preco),
-          estoque: parseInt(formData.estoque) || 0,
-        }),
+        body: fd,
       });
 
       if (!response.ok) {
@@ -76,6 +80,7 @@ export default function SupplierDashboardPage() {
 
       showMessage('Produto publicado com sucesso!', 'success');
       setFormData({ titulo: '', idCategoria: '', descricao: '', preco: '', estoque: '' });
+      setImagem(null);
       loadData();
     } catch (err) {
       showMessage(err.message, 'error');
@@ -151,6 +156,18 @@ export default function SupplierDashboardPage() {
               onChange={handleInputChange}
               placeholder="Descreva seu produto..."
               className="w-full px-3 py-2 border border-marketplace-cream rounded-lg focus:outline-none focus:ring-2 focus:ring-marketplace-accent resize-none min-h-20"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-marketplace-muted uppercase mb-2">
+              Imagem do Produto
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImagem(e.target.files[0])}
+              className="w-full px-3 py-2 border border-dashed border-marketplace-cream rounded-lg bg-marketplace-cream text-xs text-marketplace-muted cursor-pointer hover:bg-marketplace-gold transition"
             />
           </div>
 
