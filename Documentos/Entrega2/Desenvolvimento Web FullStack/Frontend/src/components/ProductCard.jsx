@@ -1,17 +1,20 @@
 export default function ProductCard({ product, onAddCart }) {
-  if (!product) return null; // Proteção contra product undefined
+  if (!product) return null;
 
   const rating = 4.5;
   const reviews = 0;
   const emEstoque = (product.estoque || 0) > 0;
   const preco = parseFloat(product.preco || 0);
+  const imagemUrl = product.imagem
+    ? `http://localhost:3000/uploads/${product.imagem}`
+    : null;
 
   return (
     <article className="bg-white rounded-lg border border-marketplace-cream shadow-sm hover:shadow-md transition-shadow overflow-hidden">
       <div className="relative h-40 bg-marketplace-paper overflow-hidden">
-        {product.imagem ? (
+        {imagemUrl ? (
           <img
-            src={product.imagem}
+            src={imagemUrl}
             alt={product.nomeProduto}
             className="w-full h-full object-cover"
           />
