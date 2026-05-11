@@ -43,74 +43,80 @@ export default function CartPage() {
           {/* Items */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg border border-marketplace-cream shadow-sm">
-              {items.map((item) => (
-                <div
-                  key={item.idProduto}
-                  className="flex gap-4 p-6 border-b border-marketplace-cream last:border-b-0"
-                >
-                  {/* Image */}
-                  <div className="w-24 h-24 bg-marketplace-paper rounded-lg flex-shrink-0 overflow-hidden">
-                    {item.imagem ? (
-                      <img
-                        src={item.imagem}
-                        alt={item.nomeProduto}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-marketplace-cream">
-                        <span className="text-marketplace-muted text-xs">Sem imagem</span>
-                      </div>
-                    )}
-                  </div>
+              {items.map((item) => {
+                const imagemUrl = item.imagem
+                  ? `http://localhost:3000/uploads/${item.imagem}`
+                  : null;
 
-                  {/* Details */}
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-marketplace-ink mb-1">
-                      {item.nomeProduto}
-                    </h3>
-                    <p className="text-sm text-marketplace-muted mb-4">
-                      R$ {parseFloat(item.preco || 0).toFixed(2)} cada
-                    </p>
+                return (
+                  <div
+                    key={item.idProduto}
+                    className="flex gap-4 p-6 border-b border-marketplace-cream last:border-b-0"
+                  >
+                    {/* Image */}
+                    <div className="w-24 h-24 bg-marketplace-paper rounded-lg flex-shrink-0 overflow-hidden">
+                      {imagemUrl ? (
+                        <img
+                          src={imagemUrl}
+                          alt={item.nomeProduto}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-marketplace-cream">
+                          <span className="text-marketplace-muted text-xs">Sem imagem</span>
+                        </div>
+                      )}
+                    </div>
 
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center border border-marketplace-cream rounded-lg">
+                    {/* Details */}
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-marketplace-ink mb-1">
+                        {item.nomeProduto}
+                      </h3>
+                      <p className="text-sm text-marketplace-muted mb-4">
+                        R$ {parseFloat(item.preco || 0).toFixed(2)} cada
+                      </p>
+
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center border border-marketplace-cream rounded-lg">
+                          <button
+                            onClick={() =>
+                              updateQuantity(item.idProduto, Math.max(1, item.quantidade - 1))
+                            }
+                            className="px-3 py-1 text-marketplace-muted hover:bg-marketplace-paper"
+                          >
+                            −
+                          </button>
+                          <span className="px-4 py-1 font-medium text-marketplace-ink min-w-12 text-center">
+                            {item.quantidade}
+                          </span>
+                          <button
+                            onClick={() =>
+                              updateQuantity(item.idProduto, item.quantidade + 1)
+                            }
+                            className="px-3 py-1 text-marketplace-muted hover:bg-marketplace-paper"
+                          >
+                            +
+                          </button>
+                        </div>
                         <button
-                          onClick={() =>
-                            updateQuantity(item.idProduto, Math.max(1, item.quantidade - 1))
-                          }
-                          className="px-3 py-1 text-marketplace-muted hover:bg-marketplace-paper"
+                          onClick={() => removeItem(item.idProduto)}
+                          className="text-red-500 hover:text-red-700 text-sm font-medium"
                         >
-                          −
-                        </button>
-                        <span className="px-4 py-1 font-medium text-marketplace-ink min-w-12 text-center">
-                          {item.quantidade}
-                        </span>
-                        <button
-                          onClick={() =>
-                            updateQuantity(item.idProduto, item.quantidade + 1)
-                          }
-                          className="px-3 py-1 text-marketplace-muted hover:bg-marketplace-paper"
-                        >
-                          +
+                          Remover
                         </button>
                       </div>
-                      <button
-                        onClick={() => removeItem(item.idProduto)}
-                        className="text-red-500 hover:text-red-700 text-sm font-medium"
-                      >
-                        Remover
-                      </button>
+                    </div>
+
+                    {/* Subtotal */}
+                    <div className="text-right">
+                      <p className="font-bold text-marketplace-ink">
+                        R$ {(parseFloat(item.preco || 0) * item.quantidade).toFixed(2)}
+                      </p>
                     </div>
                   </div>
-
-                  {/* Subtotal */}
-                  <div className="text-right">
-                    <p className="font-bold text-marketplace-ink">
-                      R$ {(parseFloat(item.preco || 0) * item.quantidade).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <button
