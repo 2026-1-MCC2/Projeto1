@@ -65,19 +65,19 @@ export async function getProdutoById(req, res) {
 }
 
 export async function createProduto(req, res) {
-  const { idCategoria, titulo, descricao, preco, estoque } = req.body;
-  const idUsuario = req.user?.idUsuario;
-  const imagem = req.file?.filename;
-
-  if (!idCategoria || !titulo || preco === undefined) {
-    return res.status(400).json({ error: 'Campos obrigatórios: idCategoria, titulo, preco' });
-  }
-
-  if (!idUsuario) {
-    return res.status(401).json({ error: 'Usuário não autenticado' });
-  }
-
   try {
+    const { idCategoria, titulo, descricao, preco, estoque } = req.body;
+    const idUsuario = req.user?.idUsuario;
+    const imagem = req.file?.filename || null;
+
+    if (!idCategoria || !titulo || preco === undefined) {
+      return res.status(400).json({ error: 'Campos obrigatórios: idCategoria, titulo, preco' });
+    }
+
+    if (!idUsuario) {
+      return res.status(401).json({ error: 'Usuário não autenticado' });
+    }
+
     // Buscar o idFornecedor do usuário
     const [fornecedorRows] = await pool.query(
       'SELECT idFornecedor FROM fornecedor WHERE idUsuario = ?',
@@ -92,7 +92,7 @@ export async function createProduto(req, res) {
 
     await pool.query(
       'INSERT INTO anuncio (idFornecedor, idCategoria, titulo, descricao, preco, estoque, imagem) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [idFornecedor, idCategoria, titulo, descricao || null, preco, estoque || 0, imagem || null]
+      [idFornecedor, idCategoria, titulo, descricao || null, preco, estoque || 0, imagem]
     );
     res.status(201).json({ mensagem: 'Produto criado com sucesso' });
   } catch (err) {
