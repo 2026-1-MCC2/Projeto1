@@ -197,8 +197,15 @@ export default function SupplierDashboardPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Produtos Ativos" value={produtos.filter(p => p.ativo).length} />
         <StatCard label="Total de Produtos" value={produtos.length} />
-        <StatCard label="Avaliação Média" value={produtos.length > 0 ? '4.5' : '-'} />
-        <StatCard label="Clientes" value={produtos.length > 0 ? '12' : '0'} />
+        <StatCard
+          label="Avaliação Média"
+          value={
+            produtos.length > 0 && produtos.some(p => p.avaliacao > 0)
+              ? (produtos.reduce((sum, p) => sum + (p.avaliacao || 0), 0) / produtos.filter(p => p.avaliacao > 0).length).toFixed(1)
+              : '-'
+          }
+        />
+        <StatCard label="Clientes" value={produtos.length > 0 ? produtos.reduce((sum, p) => sum + (p.vendas || 0), 0) : '0'} />
       </div>
 
       {/* Products Table */}
