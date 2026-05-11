@@ -21,6 +21,17 @@ export default function SupplierDashboardPage() {
   const [message, setMessage] = useState(null);
   const [imagem, setImagem] = useState(null);
 
+  // Modal de edição
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingProduto, setEditingProduto] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    titulo: '',
+    idCategoria: '',
+    descricao: '',
+    preco: '',
+    estoque: '',
+  });
+
   useEffect(() => {
     loadData();
   }, []);
@@ -45,6 +56,11 @@ export default function SupplierDashboardPage() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -81,6 +97,79 @@ export default function SupplierDashboardPage() {
       showMessage('Produto publicado com sucesso!', 'success');
       setFormData({ titulo: '', idCategoria: '', descricao: '', preco: '', estoque: '' });
       setImagem(null);
+      loadData();
+    } catch (err) {
+      showMessage(err.message, 'error');
+    }
+  };
+
+  const handleDelete = async (idProduto) => {
+    if (!window.confirm('Tem certeza que deseja deletar este produto?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/produtos/${idProduto}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erro ao deletar produto');
+      }
+
+      showMessage('Produto deletado com sucesso!', 'success');
+      loadData();
+    } catch (err) {
+      showMessage(err.message, 'error');
+    }
+  };
+
+  const openEditModal = (produto) => {
+    setEditingProduto(produto);
+    setEditFormData({
+      titulo: produto.nomeProduto || '',
+      idCategoria: produto.idCategoria || '',
+      descricao: produto.descricao || '',
+      preco: produto.preco || '',
+      estoque: produto.estoque || '',
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (!editFormData.titulo || !editFormData.idCategoria || !editFormData.preco) {
+      showMessage('Preencha os campos obrigatórios', 'error');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/produtos/${editingProduto.idProduto}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          titulo: editFormData.titulo,
+          idCategoria: parseInt(editFormData.idCategoria),
+          descricao: editFormData.descricao,
+          preco: parseFloat(editFormData.preco),
+          estoque: parseInt(editFormData.estoque) || 0,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erro ao atualizar produto');
+      }
+
+      showMessage('Produto atualizado com sucesso!', 'success');
+      setShowEditModal(false);
       loadData();
     } catch (err) {
       showMessage(err.message, 'error');
@@ -161,18 +250,6 @@ export default function SupplierDashboardPage() {
 
           <div>
             <label className="block text-xs font-semibold text-marketplace-muted uppercase mb-2">
-              Imagem do Produto
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImagem(e.target.files[0])}
-              className="w-full px-3 py-2 border border-dashed border-marketplace-cream rounded-lg bg-marketplace-cream text-xs text-marketplace-muted cursor-pointer hover:bg-marketplace-gold transition"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-marketplace-muted uppercase mb-2">
               Preço (R$) *
             </label>
             <input
@@ -198,6 +275,18 @@ export default function SupplierDashboardPage() {
               placeholder="0"
               min="0"
               className="w-full px-3 py-2 border border-marketplace-cream rounded-lg focus:outline-none focus:ring-2 focus:ring-marketplace-accent"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-marketplace-muted uppercase mb-2">
+              Imagem do Produto
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImagem(e.target.files[0])}
+              className="w-full px-3 py-2 border border-dashed border-marketplace-cream rounded-lg bg-marketplace-cream text-xs text-marketplace-muted cursor-pointer hover:bg-marketplace-gold transition"
             />
           </div>
 
@@ -288,11 +377,17 @@ export default function SupplierDashboardPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-2">
-                        <button className="bg-blue-100 text-blue-800 px-3 py-1 rounded text-xs font-semibold hover:bg-blue-200">
-                          Editar
+                        <button
+                          onClick={() => openEditModal(produto)}
+                          className="bg-blue-100 text-blue-800 px-3 py-1 rounded text-xs font-semibold hover:bg-blue-200"
+                        >
+                          ✏️ Editar
                         </button>
-                        <button className="bg-red-100 text-red-800 px-3 py-1 rounded text-xs font-semibold hover:bg-red-200">
-                          Remover
+                        <button
+                          onClick={() => handleDelete(produto.idProduto)}
+                          className="bg-red-100 text-red-800 px-3 py-1 rounded text-xs font-semibold hover:bg-red-200"
+                        >
+                          🗑️ Remover
                         </button>
                       </div>
                     </td>
@@ -303,6 +398,115 @@ export default function SupplierDashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Modal de Edição */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-bold text-marketplace-ink">✏️ Editar Produto</h3>
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleEditSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-marketplace-muted uppercase mb-2">
+                  Título *
+                </label>
+                <input
+                  type="text"
+                  name="titulo"
+                  value={editFormData.titulo}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border border-marketplace-cream rounded-lg focus:outline-none focus:ring-2 focus:ring-marketplace-accent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-marketplace-muted uppercase mb-2">
+                  Categoria *
+                </label>
+                <select
+                  name="idCategoria"
+                  value={editFormData.idCategoria}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border border-marketplace-cream rounded-lg focus:outline-none focus:ring-2 focus:ring-marketplace-accent"
+                >
+                  <option value="">Selecione uma categoria</option>
+                  {categories.map(cat => (
+                    <option key={cat.idCategoria} value={cat.idCategoria}>
+                      {cat.nomeCategoria}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-marketplace-muted uppercase mb-2">
+                  Descrição
+                </label>
+                <textarea
+                  name="descricao"
+                  value={editFormData.descricao}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border border-marketplace-cream rounded-lg focus:outline-none focus:ring-2 focus:ring-marketplace-accent resize-none min-h-16"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-marketplace-muted uppercase mb-2">
+                    Preço (R$) *
+                  </label>
+                  <input
+                    type="number"
+                    name="preco"
+                    value={editFormData.preco}
+                    onChange={handleEditInputChange}
+                    step="0.01"
+                    className="w-full px-3 py-2 border border-marketplace-cream rounded-lg focus:outline-none focus:ring-2 focus:ring-marketplace-accent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-marketplace-muted uppercase mb-2">
+                    Estoque
+                  </label>
+                  <input
+                    type="number"
+                    name="estoque"
+                    value={editFormData.estoque}
+                    onChange={handleEditInputChange}
+                    min="0"
+                    className="w-full px-3 py-2 border border-marketplace-cream rounded-lg focus:outline-none focus:ring-2 focus:ring-marketplace-accent"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-4">
+                <button
+                  type="submit"
+                  className="flex-1 py-2 bg-marketplace-accent text-white font-bold rounded-lg hover:bg-marketplace-accent-dark"
+                >
+                  💾 Atualizar Produto
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(false)}
+                  className="flex-1 py-2 bg-gray-200 text-gray-800 font-bold rounded-lg hover:bg-gray-300"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

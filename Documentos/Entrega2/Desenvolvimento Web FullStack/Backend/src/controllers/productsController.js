@@ -103,7 +103,7 @@ export async function createProduto(req, res) {
 
 export async function updateProduto(req, res) {
   const { id } = req.params;
-  const { titulo, descricao, preco, estoque, ativo } = req.body;
+  const { titulo, descricao, preco, estoque, ativo, idCategoria } = req.body;
 
   try {
     let query = 'UPDATE anuncio SET ';
@@ -129,6 +129,10 @@ export async function updateProduto(req, res) {
     if (ativo !== undefined) {
       fields.push('ativo = ?');
       values.push(ativo);
+    }
+    if (idCategoria !== undefined) {
+      fields.push('idCategoria = ?');
+      values.push(idCategoria);
     }
 
     if (fields.length === 0) {
