@@ -11,6 +11,16 @@ export default {
           200: '#e0ddd8',
           900: '#1a1a18',
         },
+        marketplace: {
+          paper: '#fbf5ee',
+          cream: '#fff3e4',
+          ink: '#2a1a12',
+          muted: '#9a7561',
+          accent: '#c56a2b',
+          'accent-dark': '#8e3f1a',
+          gold: '#f2b05f',
+          sage: '#d7c3a4',
+        },
       },
       fontFamily: {
         sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
