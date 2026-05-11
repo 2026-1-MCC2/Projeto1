@@ -12,6 +12,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.get('/health', (_, res) => {
   res.json({ ok: true, server: 'TechFood API', version: '2.0.0' });
