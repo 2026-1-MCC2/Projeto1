@@ -11,6 +11,7 @@ export default function HomePage() {
   const { addItem } = useCart();
   const { toast } = useToast();
   const [produtos, setProdutos] = useState([]);
+  const [categorizedProducts, setCategorizedProducts] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,10 +22,23 @@ export default function HomePage() {
     try {
       setLoading(true);
       const data = await getProdutos();
-      setProdutos(data);
+      setProdutos(data || []);
+
+      // Agrupar produtos por categoria
+      const grouped = {};
+      (data || []).forEach(produto => {
+        const categoria = produto.categoria || 'Sem Categoria';
+        if (!grouped[categoria]) {
+          grouped[categoria] = [];
+        }
+        grouped[categoria].push(produto);
+      });
+
+      setCategorizedProducts(grouped);
     } catch (err) {
       console.error('Erro ao carregar produtos:', err);
-      toast.error('Erro ao carregar produtos');
+      setProdutos([]);
+      setCategorizedProducts({});
     } finally {
       setLoading(false);
     }
@@ -32,12 +46,27 @@ export default function HomePage() {
 
   const handleAddCart = async (idProduto) => {
     const product = produtos.find((p) => p.idProduto === idProduto);
-    addItem(product, 1);
-    toast.success('Produto adicionado ao carrinho!');
+    if (product) {
+      addItem(product, 1);
+      toast.success('Produto adicionado ao carrinho!');
+    }
   };
 
   const handleHeroCTA = () => {
     navigate('/produtos');
+  };
+
+  const categoryDescriptions = {
+    'Nozes': 'Nozes frescas e premium de qualidade superior',
+    'Castanhas': 'Castanhas de caju, castanha-do-pará e outras variedades',
+    'Amêndoas': 'Amêndoas selecionadas, com e sem casca',
+    'Amendoins': 'Amendoins torrados e naturais em diversas apresentações',
+    'Sementes': 'Sementes de girassol, abóbora, linhaça e outras',
+    'Frutas Secas': 'Passa, damasco, tâmara e outras frutas desidratadas',
+    'Mix de Nozes': 'Misturas especiais e blends customizados de frutos secos',
+    'Raízes & Tubérculos': 'Batata, batata-doce, gengibre e outras raízes premium',
+    'Cereais & Grãos': 'Arroz, quinoa, aveia e outros grãos saudáveis',
+    'Óleos & Manteigas': 'Manteigas de amendoim, castanha e óleos prensados a frio'
   };
 
   return (
@@ -84,92 +113,64 @@ export default function HomePage() {
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-12">
         <Hero onCTAClick={handleHeroCTA} />
 
-        {/* Premium Potatoes Section */}
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-marketplace-ink mb-2">Premium Potatoes</h2>
-              <p className="text-marketplace-muted">
-                Farm-to-table root vegetables for every dish.
-              </p>
-            </div>
-            <button
-              onClick={() => navigate('/produtos')}
-              className="px-6 py-3 border-2 border-marketplace-accent text-marketplace-accent-dark font-medium rounded-lg hover:bg-marketplace-paper transition-colors"
-            >
-              See More
-            </button>
+        {/* Seções dinâmicas por categoria */}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="h-64 bg-white rounded-lg border border-marketplace-cream animate-pulse"
+              />
+            ))}
           </div>
-
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-64 bg-white rounded-lg border border-marketplace-cream animate-pulse"
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {produtos.slice(0, 4).map((produto) => (
-                <ProductCard
-                  key={produto.idProduto}
-                  product={produto}
-                  onAddCart={handleAddCart}
-                />
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Signature Nut Blends Section */}
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-marketplace-ink mb-2">
-                Signature Nut Blends
-              </h2>
-              <p className="text-marketplace-muted">
-                Crafted mixes for the ultimate snacking experience.
-              </p>
-            </div>
-            <button
-              onClick={() => navigate('/produtos')}
-              className="px-6 py-3 border-2 border-marketplace-accent text-marketplace-accent-dark font-medium rounded-lg hover:bg-marketplace-paper transition-colors"
-            >
-              See More
-            </button>
+        ) : Object.keys(categorizedProducts).length === 0 ? (
+          <div className="text-center py-16">
+            <h2 className="text-2xl font-bold text-marketplace-ink mb-4">
+              Nenhum produto disponível
+            </h2>
+            <p className="text-marketplace-muted mb-8">
+              Volte em breve para conferir nossos produtos!
+            </p>
           </div>
+        ) : (
+          Object.entries(categorizedProducts).map(([categoria, produtos]) => (
+            <section key={categoria} className="mb-16">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-3xl font-bold text-marketplace-ink mb-2">
+                    {categoria}
+                  </h2>
+                  <p className="text-marketplace-muted">
+                    {categoryDescriptions[categoria] || 'Produtos de qualidade premium'}
+                  </p>
+                </div>
+                <button
+                  onClick={() => navigate(`/produtos?categoria=${encodeURIComponent(categoria)}`)}
+                  className="px-6 py-3 border-2 border-marketplace-accent text-marketplace-accent-dark font-medium rounded-lg hover:bg-marketplace-paper transition-colors"
+                >
+                  Ver Mais
+                </button>
+              </div>
 
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-64 bg-white rounded-lg border border-marketplace-cream animate-pulse"
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {produtos.slice(4, 8).map((produto) => (
-                <ProductCard
-                  key={produto.idProduto}
-                  product={produto}
-                  onAddCart={handleAddCart}
-                />
-              ))}
-            </div>
-          )}
-        </section>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {produtos.slice(0, 4).map((produto) => (
+                  <ProductCard
+                    key={produto.idProduto}
+                    product={produto}
+                    onAddCart={handleAddCart}
+                  />
+                ))}
+              </div>
+            </section>
+          ))
+        )}
 
         {/* CTA Newsletter */}
         <section className="bg-gradient-to-r from-marketplace-accent to-marketplace-accent-dark rounded-2xl p-12 text-white mb-16">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold mb-4">Join the Nutty Community</h2>
+            <h2 className="text-3xl font-bold mb-4">Junte-se à Comunidade Mr. Nuts</h2>
             <p className="text-white/80 mb-8">
-              Get weekly recipes, exclusive discounts, and first access to seasonal harvests.
+              Receba receitas semanais, descontos exclusivos e acesso antecipado às colheitas sazonais.
             </p>
             <form
               onSubmit={(e) => {
@@ -180,7 +181,7 @@ export default function HomePage() {
             >
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Digite seu email"
                 required
                 className="flex-1 px-6 py-3 rounded-lg text-marketplace-ink"
               />
@@ -188,7 +189,7 @@ export default function HomePage() {
                 type="submit"
                 className="px-8 py-3 bg-marketplace-gold text-marketplace-ink font-bold rounded-lg hover:bg-marketplace-gold/90 transition-colors"
               >
-                Subscribe
+                Inscrever
               </button>
             </form>
           </div>
@@ -206,43 +207,43 @@ export default function HomePage() {
                 <span className="text-xl font-bold">NUTS</span>
               </div>
               <p className="text-white/70">
-                Your global marketplace for nuts, seeds, and root vegetables sourced directly from
-                farmers around the world.
+                Seu marketplace global para nozes, sementes e vegetais de raiz fornecidos diretamente
+                de agricultores ao redor do mundo.
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-8">
               <div>
-                <h4 className="font-bold mb-4">Shop</h4>
+                <h4 className="font-bold mb-4">Loja</h4>
                 <ul className="space-y-2 text-white/70 text-sm">
                   <li>
                     <a href="#" className="hover:text-marketplace-gold">
-                      Best Sellers
+                      Mais Vendidos
                     </a>
                   </li>
                   <li>
                     <a href="#" className="hover:text-marketplace-gold">
-                      New Arrivals
+                      Novidades
                     </a>
                   </li>
                   <li>
                     <a href="#" className="hover:text-marketplace-gold">
-                      Wholesale
+                      Atacado
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold mb-4">Support</h4>
+                <h4 className="font-bold mb-4">Suporte</h4>
                 <ul className="space-y-2 text-white/70 text-sm">
                   <li>
                     <a href="#" className="hover:text-marketplace-gold">
-                      Shipping Info
+                      Informações de Envio
                     </a>
                   </li>
                   <li>
                     <a href="#" className="hover:text-marketplace-gold">
-                      Returns
+                      Devoluções
                     </a>
                   </li>
                   <li>
@@ -253,22 +254,22 @@ export default function HomePage() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold mb-4">Contact</h4>
+                <h4 className="font-bold mb-4">Contato</h4>
                 <ul className="space-y-2 text-white/70 text-sm">
                   <li>
                     <a href="mailto:support@mrnuts.com" className="hover:text-marketplace-gold">
                       support@mrnuts.com
                     </a>
                   </li>
-                  <li>+1 (555) 888-9999</li>
-                  <li>123 Orchard Lane, CA</li>
+                  <li>+55 (11) 3000-0000</li>
+                  <li>São Paulo, SP</li>
                 </ul>
               </div>
             </div>
           </div>
 
           <div className="border-t border-white/10 pt-8 text-center text-white/70 text-sm">
-            <span>2026 Mr Nuts Marketplace. All rights reserved.</span>
+            <span>2026 Mr Nuts Marketplace. Todos os direitos reservados.</span>
           </div>
         </div>
       </footer>

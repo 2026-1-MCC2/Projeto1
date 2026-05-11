@@ -22,9 +22,12 @@ api.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401 || err.response?.status === 403) {
       const path = window.location.pathname;
-      if (path !== '/login' && path !== '/registro') {
+      // Só redireciona se já não está em uma página pública
+      if (path !== '/login' && path !== '/registro' && path !== '/' && path !== '/produtos') {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
         window.location.href = '/login';
       }
     }

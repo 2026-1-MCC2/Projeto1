@@ -1,4 +1,11 @@
 export default function ProductCard({ product, onAddCart }) {
+  if (!product) return null; // Proteção contra product undefined
+
+  const rating = 4.5;
+  const reviews = 0;
+  const emEstoque = (product.estoque || 0) > 0;
+  const preco = parseFloat(product.preco || 0);
+
   return (
     <article className="bg-white rounded-lg border border-marketplace-cream shadow-sm hover:shadow-md transition-shadow overflow-hidden">
       <div className="relative h-40 bg-marketplace-paper overflow-hidden">
@@ -18,7 +25,13 @@ export default function ProductCard({ product, onAddCart }) {
       <div className="p-4">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xs text-marketplace-muted font-medium">
-            ⭐ {product.rating.toFixed(1)} ({product.reviews} reviews)
+            {reviews > 0 ? (
+              <>
+                ⭐ {rating.toFixed(1)} ({reviews} {reviews === 1 ? 'review' : 'reviews'})
+              </>
+            ) : (
+              'Sem Reviews'
+            )}
           </span>
         </div>
 
@@ -32,18 +45,18 @@ export default function ProductCard({ product, onAddCart }) {
 
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold text-marketplace-accent">
-            ${product.preco.toFixed(2)}
+            R$ {preco.toFixed(2)}
           </span>
           <button
             onClick={() => onAddCart(product.idProduto)}
-            disabled={!product.emEstoque}
+            disabled={!emEstoque}
             className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-              product.emEstoque
+              emEstoque
                 ? 'bg-marketplace-cream text-marketplace-ink hover:bg-marketplace-gold cursor-pointer'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
           >
-            {product.emEstoque ? 'Add' : 'Out'}
+            {emEstoque ? 'Adicionar' : 'Fora'}
           </button>
         </div>
       </div>

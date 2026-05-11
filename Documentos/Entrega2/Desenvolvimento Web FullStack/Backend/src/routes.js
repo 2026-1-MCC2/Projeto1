@@ -24,6 +24,10 @@ import {
   deleteProduto,
 } from './controllers/productsController.js';
 import {
+  getCategorias,
+  createCategoria,
+} from './controllers/categoriesController.js';
+import {
   getCarrinho,
   addCarrinho,
   updateCarrinho,
@@ -64,6 +68,10 @@ r.get('/produtos/:id', getProdutoById);
 r.post('/produtos', verifyTokenMiddleware, upload.single('imagem'), createProduto);
 r.put('/produtos/:id', verifyTokenMiddleware, upload.single('imagem'), updateProduto);
 r.delete('/produtos/:id', verifyTokenMiddleware, deleteProduto);
+
+// ----- Rotas de Categorias (publicas) -----
+r.get('/categorias', getCategorias);
+r.post('/categorias', verifyTokenMiddleware, createCategoria);
 
 // ----- Rotas de Carrinho (protegidas) -----
 r.get('/carrinho', verifyTokenMiddleware, getCarrinho);

@@ -10,7 +10,7 @@ export async function verifyTokenMiddleware(req, res, next) {
     }
 
     const decoded = await verifyToken(token);
-    req.user = { id: decoded.id, jti: decoded.jti };
+    req.user = { idUsuario: decoded.id, id: decoded.id, jti: decoded.jti };
     next();
   } catch (err) {
     const status = err.message === 'Token denylisted' ? 401 : 403;

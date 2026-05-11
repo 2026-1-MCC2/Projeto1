@@ -6,7 +6,7 @@ const slides = [
     title: 'Seleção Premium de Nozes',
     text: 'Castanhas e nozes frescas direto dos fornecedores. Aproveite ofertas exclusivas no marketplace.',
     image:
-      'https://images.unsplash.com/photo-1599599810694-b5ac4dd3e3d7?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1599599810694-b5ac4dd3e3d7?w=1600&q=80',
     alt: 'Nozes em tigelas rústicas',
     cta: 'Ver Coleção',
   },
@@ -15,7 +15,7 @@ const slides = [
     title: 'Amêndoas Orgânicas',
     text: 'Certificadas organicamente, com qualidade premium e entrega rápida.',
     image:
-      'https://images.unsplash.com/photo-1585329217456-c1a0ead25cb5?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1585329217456-c1a0ead25cb5?w=1600&q=80',
     alt: 'Amêndoas frescas',
     cta: 'Comprar Agora',
   },
@@ -24,7 +24,7 @@ const slides = [
     title: 'Mix de Castanhas Gourmet',
     text: 'Blend exclusivo com os melhores sabores. Perfeito para eventos e presentes.',
     image:
-      'https://images.unsplash.com/photo-1583259013994-d52df80fdf78?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1583259013994-d52df80fdf78?w=1600&q=80',
     alt: 'Mix de castanhas',
     cta: 'Explorar',
   },
@@ -60,6 +60,9 @@ export default function Hero({ onCTAClick }) {
           src={slide.image}
           alt={slide.alt}
           className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
 

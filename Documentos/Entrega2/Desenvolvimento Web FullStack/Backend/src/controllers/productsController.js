@@ -1,35 +1,28 @@
 import { pool } from '../db.js';
 
-const select = `
-  SELECT idProduto, nomeProduto, categoria, descricao, preco, rating, reviews, imagem, emEstoque
-  FROM produto
-`;
-
 export async function getProdutos(req, res) {
   try {
-    const { categoria, preco_max, rating_min, em_estoque } = req.query;
-    let query = `${select} WHERE 1=1`;
-    const params = [];
+    const query = `
+      SELECT
+        a.idAnuncio as idProduto,
+        a.titulo as nomeProduto,
+        c.nomeCategoria as categoria,
+        a.descricao,
+        a.preco,
+        a.estoque,
+        a.ativo,
+        a.dataCriacao,
+        u.nomeUsuario as fornecedor,
+        c.idCategoria
+      FROM anuncio a
+      LEFT JOIN categoriaProduto c ON a.idCategoria = c.idCategoria
+      LEFT JOIN fornecedor f ON a.idFornecedor = f.idFornecedor
+      LEFT JOIN usuario u ON f.idUsuario = u.idUsuario
+      WHERE a.ativo = TRUE
+      ORDER BY a.dataCriacao DESC
+    `;
 
-    if (categoria) {
-      query += ` AND categoria = ?`;
-      params.push(categoria);
-    }
-    if (preco_max) {
-      query += ` AND preco <= ?`;
-      params.push(parseFloat(preco_max));
-    }
-    if (rating_min) {
-      query += ` AND rating >= ?`;
-      params.push(parseFloat(rating_min));
-    }
-    if (em_estoque === 'true') {
-      query += ` AND emEstoque = TRUE`;
-    }
-
-    query += ` ORDER BY idProduto DESC`;
-
-    const [rows] = await pool.query(query, params);
+    const [rows] = await pool.query(query);
     res.json(rows);
   } catch (err) {
     console.error('getProdutos:', err.message);
@@ -40,9 +33,27 @@ export async function getProdutos(req, res) {
 export async function getProdutoById(req, res) {
   const { id } = req.params;
   try {
-    const [rows] = await pool.query(`${select} WHERE idProduto = ?`, [id]);
+    const query = `
+      SELECT
+        a.idAnuncio as idProduto,
+        a.titulo as nomeProduto,
+        c.nomeCategoria as categoria,
+        a.descricao,
+        a.preco,
+        a.estoque,
+        a.ativo,
+        a.dataCriacao,
+        u.nomeUsuario as fornecedor
+      FROM anuncio a
+      LEFT JOIN categoriaProduto c ON a.idCategoria = c.idCategoria
+      LEFT JOIN fornecedor f ON a.idFornecedor = f.idFornecedor
+      LEFT JOIN usuario u ON f.idUsuario = u.idUsuario
+      WHERE a.idAnuncio = ? AND a.ativo = TRUE
+    `;
+
+    const [rows] = await pool.query(query, [id]);
     if (rows.length === 0) {
-      return res.status(404).json({ error: 'Produto nao encontrado' });
+      return res.status(404).json({ error: 'Produto não encontrado' });
     }
     res.json(rows[0]);
   } catch (err) {
@@ -52,31 +63,35 @@ export async function getProdutoById(req, res) {
 }
 
 export async function createProduto(req, res) {
-  const { nomeProduto, categoria, descricao, preco, rating, reviews, emEstoque } = req.body;
+  const { idCategoria, titulo, descricao, preco, estoque } = req.body;
+  const idUsuario = req.user?.idUsuario;
 
-  if (!nomeProduto || !categoria || !preco) {
-    return res.status(400).json({ error: 'nomeProduto, categoria e preco sao obrigatorios' });
+  if (!idCategoria || !titulo || preco === undefined) {
+    return res.status(400).json({ error: 'Campos obrigatórios: idCategoria, titulo, preco' });
+  }
+
+  if (!idUsuario) {
+    return res.status(401).json({ error: 'Usuário não autenticado' });
   }
 
   try {
-    const imagem = req.file ? 'uploads/' + req.file.filename : null;
-
-    const [result] = await pool.query(
-      'INSERT INTO produto (nomeProduto, categoria, descricao, preco, rating, reviews, imagem, emEstoque) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [nomeProduto, categoria, descricao || null, preco, rating || 0, reviews || 0, imagem, emEstoque !== false]
+    // Buscar o idFornecedor do usuário
+    const [fornecedorRows] = await pool.query(
+      'SELECT idFornecedor FROM fornecedor WHERE idUsuario = ?',
+      [idUsuario]
     );
 
-    res.status(201).json({
-      idProduto: result.insertId,
-      nomeProduto,
-      categoria,
-      descricao,
-      preco,
-      rating: rating || 0,
-      reviews: reviews || 0,
-      imagem,
-      emEstoque: emEstoque !== false,
-    });
+    if (fornecedorRows.length === 0) {
+      return res.status(403).json({ error: 'Você não é um fornecedor registrado' });
+    }
+
+    const idFornecedor = fornecedorRows[0].idFornecedor;
+
+    await pool.query(
+      'INSERT INTO anuncio (idFornecedor, idCategoria, titulo, descricao, preco, estoque) VALUES (?, ?, ?, ?, ?, ?)',
+      [idFornecedor, idCategoria, titulo, descricao || null, preco, estoque || 0]
+    );
+    res.status(201).json({ mensagem: 'Produto criado com sucesso' });
   } catch (err) {
     console.error('createProduto:', err.message);
     res.status(500).json({ error: 'Erro ao criar produto' });
@@ -85,62 +100,48 @@ export async function createProduto(req, res) {
 
 export async function updateProduto(req, res) {
   const { id } = req.params;
-  const { nomeProduto, categoria, descricao, preco, rating, reviews, emEstoque } = req.body;
+  const { titulo, descricao, preco, estoque, ativo } = req.body;
 
   try {
-    const [rows] = await pool.query('SELECT * FROM produto WHERE idProduto = ?', [id]);
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'Produto nao encontrado' });
-    }
+    let query = 'UPDATE anuncio SET ';
+    const fields = [];
+    const values = [];
 
-    const updates = [];
-    const params = [];
-
-    if (nomeProduto) {
-      updates.push('nomeProduto = ?');
-      params.push(nomeProduto);
-    }
-    if (categoria) {
-      updates.push('categoria = ?');
-      params.push(categoria);
+    if (titulo !== undefined) {
+      fields.push('titulo = ?');
+      values.push(titulo);
     }
     if (descricao !== undefined) {
-      updates.push('descricao = ?');
-      params.push(descricao || null);
+      fields.push('descricao = ?');
+      values.push(descricao);
     }
     if (preco !== undefined) {
-      updates.push('preco = ?');
-      params.push(preco);
+      fields.push('preco = ?');
+      values.push(preco);
     }
-    if (rating !== undefined) {
-      updates.push('rating = ?');
-      params.push(rating);
+    if (estoque !== undefined) {
+      fields.push('estoque = ?');
+      values.push(estoque);
     }
-    if (reviews !== undefined) {
-      updates.push('reviews = ?');
-      params.push(reviews);
-    }
-    if (emEstoque !== undefined) {
-      updates.push('emEstoque = ?');
-      params.push(emEstoque);
-    }
-    if (req.file) {
-      updates.push('imagem = ?');
-      params.push('uploads/' + req.file.filename);
+    if (ativo !== undefined) {
+      fields.push('ativo = ?');
+      values.push(ativo);
     }
 
-    if (updates.length === 0) {
+    if (fields.length === 0) {
       return res.status(400).json({ error: 'Nenhum campo para atualizar' });
     }
 
-    params.push(id);
-    await pool.query(
-      `UPDATE produto SET ${updates.join(', ')} WHERE idProduto = ?`,
-      params
-    );
+    query += fields.join(', ') + ' WHERE idAnuncio = ?';
+    values.push(id);
 
-    const [updated] = await pool.query(`${select} WHERE idProduto = ?`, [id]);
-    res.json(updated[0]);
+    const [result] = await pool.query(query, values);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Produto não encontrado' });
+    }
+
+    res.json({ mensagem: 'Produto atualizado com sucesso' });
   } catch (err) {
     console.error('updateProduto:', err.message);
     res.status(500).json({ error: 'Erro ao atualizar produto' });
@@ -151,15 +152,15 @@ export async function deleteProduto(req, res) {
   const { id } = req.params;
 
   try {
-    const [rows] = await pool.query('SELECT * FROM produto WHERE idProduto = ?', [id]);
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'Produto nao encontrado' });
+    const [result] = await pool.query('DELETE FROM anuncio WHERE idAnuncio = ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Produto não encontrado' });
     }
 
-    await pool.query('DELETE FROM produto WHERE idProduto = ?', [id]);
-    res.json({ message: 'Produto excluido com sucesso' });
+    res.json({ mensagem: 'Produto deletado com sucesso' });
   } catch (err) {
     console.error('deleteProduto:', err.message);
-    res.status(500).json({ error: 'Erro ao excluir produto' });
+    res.status(500).json({ error: 'Erro ao deletar produto' });
   }
 }

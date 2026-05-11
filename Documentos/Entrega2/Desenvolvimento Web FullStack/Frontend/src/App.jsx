@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 import { ToastProvider } from './contexts/ToastContext.jsx';
 import { CartProvider } from './contexts/CartContext.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import AdminRoute from './components/AdminRoute.jsx';
+import SupplierRoute from './components/SupplierRoute.jsx';
 import Navbar from './components/Navbar.jsx';
 
 // Pages
@@ -15,6 +17,7 @@ import HomePage from './pages/HomePage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
 import CartPage from './pages/CartPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
+import SupplierDashboardPage from './pages/SupplierDashboardPage.jsx';
 
 function AdminLayout({ children }) {
   return (
@@ -67,31 +70,31 @@ export default function App() {
               <Route
                 path="/usuarios"
                 element={
-                  <ProtectedRoute>
+                  <AdminRoute>
                     <AdminLayout>
                       <UsuariosPage />
                     </AdminLayout>
-                  </ProtectedRoute>
+                  </AdminRoute>
                 }
               />
               <Route
                 path="/usuarios/novo"
                 element={
-                  <ProtectedRoute>
+                  <AdminRoute>
                     <AdminLayout>
                       <UsuarioFormPage />
                     </AdminLayout>
-                  </ProtectedRoute>
+                  </AdminRoute>
                 }
               />
               <Route
                 path="/usuarios/:id/editar"
                 element={
-                  <ProtectedRoute>
+                  <AdminRoute>
                     <AdminLayout>
                       <UsuarioFormPage />
                     </AdminLayout>
-                  </ProtectedRoute>
+                  </AdminRoute>
                 }
               />
               <Route
@@ -102,6 +105,16 @@ export default function App() {
                       <PerfilPage />
                     </AdminLayout>
                   </ProtectedRoute>
+                }
+              />
+
+              {/* Supplier Dashboard */}
+              <Route
+                path="/fornecedor/dashboard"
+                element={
+                  <SupplierRoute>
+                    <SupplierDashboardPage />
+                  </SupplierRoute>
                 }
               />
 

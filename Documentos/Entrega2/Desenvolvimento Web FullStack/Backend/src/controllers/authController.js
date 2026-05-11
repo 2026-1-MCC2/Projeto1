@@ -18,7 +18,7 @@ const sanitizeUser = (u) => ({
 
 // POST /api/auth/register
 export async function register(req, res) {
-  const { nomeUsuario, email, senha, contato, tipoUsuario } = req.body;
+  const { nomeUsuario, email, senha, contato, tipoUsuario, cpf, cnpj } = req.body;
 
   if (!nomeUsuario || !email || !senha) {
     if (req.file) fs.unlink(req.file.path, () => {});
@@ -36,17 +36,62 @@ export async function register(req, res) {
     const imgPath = req.file ? 'uploads/' + path.basename(req.file.path) : null;
     const tipo = tipoUsuario ? parseInt(tipoUsuario, 10) : 2;
 
-    const [result] = await pool.query(
-      'INSERT INTO usuario (tipoUsuario, nomeUsuario, email, senha, contato, img) VALUES (?, ?, ?, ?, ?, ?)',
-      [tipo, nomeUsuario, email, hash, contato || null, imgPath]
-    );
+    // Iniciar transação
+    const connection = await pool.getConnection();
+    await connection.beginTransaction();
 
-    res.status(201).json({
-      id: result.insertId,
-      nomeUsuario,
-      email,
-      img: imgPath,
-    });
+    try {
+      // Inserir na tabela usuario
+      const [result] = await connection.query(
+        'INSERT INTO usuario (tipoUsuario, nomeUsuario, email, senha, contato, img) VALUES (?, ?, ?, ?, ?, ?)',
+        [tipo, nomeUsuario, email, hash, contato || null, imgPath]
+      );
+
+      const idUsuario = result.insertId;
+
+      // Inserir na tabela específica baseado no tipo
+      if (tipo === 1) {
+        // Admin
+        await connection.query(
+          'INSERT INTO administrador (idUsuario, nivelAcesso) VALUES (?, ?)',
+          [idUsuario, 1]
+        );
+      } else if (tipo === 2) {
+        // Comprador - requer CPF
+        if (!cpf) {
+          await connection.rollback();
+          return res.status(400).json({ error: 'CPF é obrigatório para compradores' });
+        }
+        await connection.query(
+          'INSERT INTO comprador (idUsuario, cpf) VALUES (?, ?)',
+          [idUsuario, cpf]
+        );
+      } else if (tipo === 3) {
+        // Fornecedor - requer CNPJ
+        if (!cnpj) {
+          await connection.rollback();
+          return res.status(400).json({ error: 'CNPJ é obrigatório para fornecedores' });
+        }
+        await connection.query(
+          'INSERT INTO fornecedor (idUsuario, cnpj, nomeFantasia) VALUES (?, ?, ?)',
+          [idUsuario, cnpj, nomeUsuario]
+        );
+      }
+
+      await connection.commit();
+      connection.release();
+
+      res.status(201).json({
+        id: idUsuario,
+        nomeUsuario,
+        email,
+        img: imgPath,
+      });
+    } catch (err) {
+      await connection.rollback();
+      connection.release();
+      throw err;
+    }
   } catch (err) {
     if (req.file) fs.unlink(req.file.path, () => {});
     if (err.code === 'ER_DUP_ENTRY') {

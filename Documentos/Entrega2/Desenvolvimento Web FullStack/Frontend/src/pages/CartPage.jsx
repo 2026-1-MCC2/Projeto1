@@ -69,7 +69,7 @@ export default function CartPage() {
                       {item.nomeProduto}
                     </h3>
                     <p className="text-sm text-marketplace-muted mb-4">
-                      ${item.preco.toFixed(2)} cada
+                      R$ {parseFloat(item.preco || 0).toFixed(2)} cada
                     </p>
 
                     <div className="flex items-center gap-4">
@@ -106,7 +106,7 @@ export default function CartPage() {
                   {/* Subtotal */}
                   <div className="text-right">
                     <p className="font-bold text-marketplace-ink">
-                      ${(item.preco * item.quantidade).toFixed(2)}
+                      R$ {(parseFloat(item.preco || 0) * item.quantidade).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export default function CartPage() {
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-marketplace-muted">
                   <span>Subtotal</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>R$ {(total || 0).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-marketplace-muted">
                   <span>Frete</span>
@@ -143,7 +143,7 @@ export default function CartPage() {
                 <div className="border-t border-marketplace-cream pt-4 flex justify-between font-bold text-marketplace-ink">
                   <span>Total</span>
                   <span className="text-2xl text-marketplace-accent">
-                    ${total.toFixed(2)}
+                    R$ {(total || 0).toFixed(2)}
                   </span>
                 </div>
               </div>

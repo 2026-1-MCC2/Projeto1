@@ -20,19 +20,25 @@ export default function Navbar() {
         : 'text-white/60 hover:text-white hover:bg-white/10'
     }`;
 
+  const isAdmin = user?.tipoUsuario === 1;
+
   return (
     <nav className="bg-brand-900 text-white">
       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center gap-2">
-        <Link to="/usuarios" className="font-mono text-sm text-white/70 mr-4">
+        <Link to={isAdmin ? "/usuarios" : "/"} className="font-mono text-sm text-white/70 mr-4">
           TechFood
         </Link>
 
-        <NavLink to="/usuarios" className={linkClass}>
-          Usuarios
-        </NavLink>
-        <NavLink to="/usuarios/novo" className={linkClass}>
-          Novo
-        </NavLink>
+        {isAdmin && (
+          <>
+            <NavLink to="/usuarios" className={linkClass}>
+              Usuarios
+            </NavLink>
+            <NavLink to="/usuarios/novo" className={linkClass}>
+              Novo
+            </NavLink>
+          </>
+        )}
         <NavLink to="/perfil" className={linkClass}>
           Perfil
         </NavLink>
