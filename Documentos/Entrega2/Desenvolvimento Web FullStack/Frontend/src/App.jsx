@@ -17,6 +17,8 @@ import HomePage from './pages/HomePage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
 import CartPage from './pages/CartPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
+import PurchaseHistoryPage from './pages/PurchaseHistoryPage.jsx';
+import SupplierDashboardPage from './pages/SupplierDashboardPage.jsx';
 
 function AdminLayout({ children }) {
   return (
@@ -116,6 +118,28 @@ export default function App() {
                       <PerfilPage />
                     </AdminLayout>
                   </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/compras"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <PurchaseHistoryPage />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/loja"
+                element={
+                  <SupplierRoute>
+                    <AdminLayout>
+                      <SupplierDashboardPage />
+                    </AdminLayout>
+                  </SupplierRoute>
                 }
               />
 
