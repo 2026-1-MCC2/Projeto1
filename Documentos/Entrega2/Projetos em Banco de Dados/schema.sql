@@ -47,9 +47,9 @@ CREATE TABLE fornecedor (
 
 -- Categoria separada da tabela anuncio
 CREATE TABLE categoriaProduto (
-    idCategoria  INT AUTO_INCREMENT PRIMARY KEY,
+    idCategoria   INT AUTO_INCREMENT PRIMARY KEY,
     nomeCategoria VARCHAR(255) NOT NULL UNIQUE,
-    descricao TEXT
+    descricao     TEXT
 );
 
 -- Anuncio melhorado
@@ -67,20 +67,20 @@ CREATE TABLE anuncio (
     FOREIGN KEY (idCategoria)  REFERENCES categoriaProduto(idCategoria)
 );
 
+-- Avaliação
 CREATE TABLE avaliacao (
-    idAvaliacao     INT AUTO_INCREMENT PRIMARY KEY,
-    idComprador     INT NOT NULL,
-    idAnuncio       INT NOT NULL,
-    nota            TINYINT NOT NULL,
-    comentario      TEXT,
-    dataAvaliacao   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    CONSTRAINT chk_nota CHECK (nota BETWEEN 1 AND 5),
+    idAvaliacao   INT AUTO_INCREMENT PRIMARY KEY,
+    idComprador   INT NOT NULL,
+    idAnuncio     INT NOT NULL,
+    nota          TINYINT NOT NULL,
+    comentario    TEXT,
+    dataAvaliacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_nota   CHECK (nota BETWEEN 1 AND 5),
     CONSTRAINT uq_avaliacao UNIQUE (idComprador, idAnuncio), -- impede avaliar o mesmo anúncio duas vezes
-    
     FOREIGN KEY (idComprador) REFERENCES comprador(idComprador),
     FOREIGN KEY (idAnuncio)   REFERENCES anuncio(idAnuncio)
 );
+
 -- Inserir categorias padrão
 INSERT INTO categoriaProduto (nomeCategoria, descricao) VALUES
 ('Nozes', 'Nozes frescas e premium de qualidade superior'),
