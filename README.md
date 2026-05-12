@@ -162,6 +162,9 @@ O banco **techfood** possui as seguintes tabelas:
 - **`anuncio`** — Anúncios de produtos dos fornecedores
 - **`avaliacao`** — Avaliações dos compradores sobre anúncios
 
+## Banco de Dados 
+A documentação completa das tabelas, relacionamentos e o script SQL podem ser encontrados no link abaixo: [Acesse a Documentação do Banco de Dados aqui](./BD/README.md)
+
 ---
 ## 📋 Licença/License
 
