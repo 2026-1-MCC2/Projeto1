@@ -319,6 +319,9 @@ O frontend estará rodando em `http://localhost:5173`.
 | **Julia Valério** | Base do DER junto ao Guilherme, documentação de Gestão Empresarial |
 | **Kaike Santos** | Backlog, documentação do projeto e documentação de Cálculo II |
 
+## Banco de Dados 
+A documentação completa das tabelas, relacionamentos e o script SQL podem ser encontrados no link abaixo: [Acesse a Documentação do Banco de Dados aqui](https://github.com/2026-1-MCC2/Projeto1/tree/main/Documentos/Entrega2/Projetos%20em%20Banco%20de%20Dados)](./BD/README.md)
+
 ---
 
 ## 📋 Licença
