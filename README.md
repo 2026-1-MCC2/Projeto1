@@ -12,6 +12,10 @@
 
 ## Descrição
 
+<p align="center">
+  <img src="./assets/img_logo_MrNuts.png" width="300">
+</p>
+
 Projeto de Marketplace para a empresa **Mr. Nuts** desenvolvido pelo grupo **TechFood**. A aplicação é fullstack, construída com **React + Vite + Tailwind CSS** no frontend e **Node.js + Express + MySQL** no backend. O projeto foca na negociação de produtos entre usuários (compradores e fornecedores), com funcionalidades de anúncios, categorias, carrinho de compras, pedidos, avaliações e autenticação JWT. Conta também com uma área para Usuários Administradores realizarem a gestão de produtos e usuários.
 
 ## 🚀 Tecnologias Utilizadas
