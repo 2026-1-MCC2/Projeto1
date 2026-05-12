@@ -131,7 +131,9 @@ Projeto1/
 
 ## 🗄 Banco de Dados
 
-> 📄 Script completo de criação do banco: [`Documentos/Entrega2/Projetos em Banco de Dados/schema.sql`](Documentos/Entrega2/Projetos%20em%20Banco%20de%20Dados/schema.sql)
+> 📄 Documentação completa do banco de dados: [`Documentos/Entrega2/Projetos em Banco de Dados/README.md`](Documentos/Entrega2/Projetos%20em%20Banco%20de%20Dados/README.md)
+>
+> 📄 Script SQL de criação: [`Documentos/Entrega2/Projetos em Banco de Dados/schema.sql`](Documentos/Entrega2/Projetos%20em%20Banco%20de%20Dados/schema.sql)
 
 O banco **techfood** (MySQL) possui as seguintes tabelas:
 
