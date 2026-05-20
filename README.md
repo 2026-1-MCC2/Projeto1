@@ -6,74 +6,205 @@
 
 # TechFood
 
-## Integrantes: <a href="/www.linkedin.com/in/fabrizzio-puttini">Fabrizzio Puttini </a>, <a href="https://www.linkedin.com/in/julia-valério/">Julia Valério</a>, <a href="https://www.linkedin.com/in/lr-s/">Luiz Silvestre</a>, <a href="https://www.linkedin.com/in/guilherme-belcastro-medeiros-785598281/">Guilherme Belcastro </a>,<a href="https://www.linkedin.com/in/kaike-cavalcante-7283a0266/"> Kaike Cavalcante</a> 
+## Integrantes: <a href="/www.linkedin.com/in/fabrizzio-puttini">Fabrizzio Puttini</a>, <a href="https://www.linkedin.com/in/julia-valério/">Julia Valério</a>, <a href="https://www.linkedin.com/in/lr-s/">Luiz Silvestre</a>, <a href="https://www.linkedin.com/in/guilherme-belcastro-medeiros-785598281/">Guilherme Belcastro</a>, <a href="https://www.linkedin.com/in/kaike-cavalcante-7283a0266/">Kaike Cavalcante</a>
 
 ## Professores Orientadores: <a href="https://www.linkedin.com/in/francisco-escobar/">Francisco Escobar</a>, <a href="https://www.linkedin.com/in/cristina-machado-corr%C3%AAa-leite-630309160/">Cristina Machado Corrêa Leite</a>, <a href="https://www.linkedin.com/in/katia-bossi/">Katia Milani Lara Bossi</a>, <a href="https://www.linkedin.com/in/jesuslisboagomes/">Jésus Gomes</a>, <a href="https://www.linkedin.com/in/dolemes/">David de Oliveira Lemes</a>
 
 ## Descrição
 
-Projeto de Marketplace para empresa **Mr. Nuts** feito pelos membros da **TechFood**, desenvolvida com **Node.js + Express + MySQL**. O projeto foca na negociação de produtos entre usuários (compradores e fornecedores), anúncios de produtos, categorias e avaliações. Além de contar com uma área para Usuários Administradores realizarem a filtragem de quais produtos poderão ser anunciados.
+<p align="center">
+  <img src="./assets/img_logo_MrNuts.png" width="300">
+</p>
 
-## Dados do .ENV
-<br><br>
-DB_HOST=localhost<br>
-DB_USER=root<br>
-DB_PASSWORD=<br>
-DB_DATABASE=techfood<br>
-DB_PORT=3306<br>
+Projeto de Marketplace para a empresa **Mr. Nuts** desenvolvido pelo grupo **TechFood**. A aplicação é fullstack, construída com **React + Vite + Tailwind CSS** no frontend e **Node.js + Express + MySQL** no backend. O projeto foca na negociação de produtos entre usuários (compradores e fornecedores), com funcionalidades de anúncios, categorias, carrinho de compras, pedidos, avaliações e autenticação JWT. Conta também com uma área para Usuários Administradores realizarem a gestão de produtos e usuários.
 
-## 🛠 Estrutura de pastas
+## 🚀 Tecnologias Utilizadas
+
+### Frontend
+- React 19
+- Vite 8
+- Tailwind CSS 3
+- React Router DOM 7
+- Axios
+
+### Backend
+- Node.js + Express 4
+- MySQL 2
+- JWT (jsonwebtoken)
+- Bcrypt (hash de senhas)
+- Multer (upload de imagens)
+- UUID
+
+## 🛠 Estrutura de Pastas
 
 <pre>
-|-- Raiz (Projeto1/)
-|-- 📂 Documentos
-│   ├── � Entrega 1
-│   │   ├── Cálculo II
-│   │   ├── Desenvolvimento Web Full Stack
-│   │     |-- 📂 Backend
-│   │         ├── 📂 src
-│   │         ├── 📄 db.js (conexão com o banco de dados)
-│   │         └── 📄 server.js (servidor Express + rotas CRUD)
-│   ├── � .env.example (variáveis de ambiente - modelo)
-│   ├── 📄 package.json
-│   └── 📄 package-lock.json
-│   │   ├── Gestão Empresarial
-│   │   ├── Projeto Web Interdisciplinar
-│   │   └── Projeto em Banco de Dados
-│   │       |-- 📂 banco de dados
-│   │           ├── 📄 BD projeto.sql (script de criação do banco e tabelas)
-│   │           ├── 📄 DER TechFood.mwb (modelo do banco - MySQL Workbench)
-│   │           └── 📄 DER TechFood.mwb.bak (backup do modelo)
-│   └── 📂 Entrega 2
-│       ├── Cálculo II
-│       ├── Desenvolvimento Web Full Stack
-│       ├── Gestão Empresarial
-│       ├── Projeto Web Interdisciplinar
-│       └── Projeto em Banco de Dados
+Projeto1/
+├── 📄 .gitignore
+├── 📄 README.md (este arquivo)
 │
-|-- 📄 .gitignore
-|-- 📄 README.md (Este arquivo)
+└── 📂 Documentos/
+    ├── 📂 Entrega1/
+    │   ├── 📂 Cálculo 2/
+    │   ├── 📂 Desenvolvimento_Web_FullStack/
+    │   │   └── 📂 Backend/
+    │   │       └── 📂 src/
+    │   │           ├── 📄 db.js
+    │   │           └── 📄 server.js
+    │   ├── 📂 Gestão Empresarial e Dinâmicas das Organizações/
+    │   ├── 📂 Projeto Interdisciplinar Programação Web/
+    │   └── 📂 Projetos em Banco de Dados/
+    │       ├── 📄 DER.png
+    │       └── 📄 DER TechFood.mwb
+    │
+    └── 📂 Entrega2/
+        ├── 📂 Cálculo 2/
+        ├── 📂 Desenvolvimento Web FullStack/
+        │   ├── � Backend/
+        │   │   ├── 📂 src/
+        │   │   │   ├── 📂 controllers/
+        │   │   │   │   ├── 📄 authController.js
+        │   │   │   │   ├── 📄 cartController.js
+        │   │   │   │   ├── 📄 categoriesController.js
+        │   │   │   │   ├── 📄 ordersController.js
+        │   │   │   │   ├── 📄 productsController.js
+        │   │   │   │   └── 📄 usuarioController.js
+        │   │   │   ├── 📂 middlewares/
+        │   │   │   │   └── 📄 authMiddleware.js
+        │   │   │   ├── 📂 services/
+        │   │   │   │   └── 📄 tokenService.js
+        │   │   │   ├── 📄 app.js
+        │   │   │   ├── 📄 db.js
+        │   │   │   ├── 📄 routes.js
+        │   │   │   ├── 📄 server.js
+        │   │   │   └── � uploadConfig.js
+        │   │   ├── 📂 uploads/
+        │   │   ├── 📄 .env.example
+        │   │   ├── 📄 BD projeto.sql
+        │   │   ├── 📄 package.json
+        │   │   └── 📄 README.md
+        │   │
+        │   └── 📂 Frontend/
+        │       ├── 📂 public/
+        │       ├── 📂 src/
+        │       │   ├── 📂 api/
+        │       │   ├── 📂 components/
+        │       │   │   ├── 📄 AdminRoute.jsx
+        │       │   │   ├── 📄 Avatar.jsx
+        │       │   │   ├── 📄 Filters.jsx
+        │       │   │   ├── 📄 Hero.jsx
+        │       │   │   ├── 📄 Navbar.jsx
+        │       │   │   ├── 📄 Pagination.jsx
+        │       │   │   ├── 📄 ProductCard.jsx
+        │       │   │   ├── 📄 ProtectedRoute.jsx
+        │       │   │   └── 📄 SupplierRoute.jsx
+        │       │   ├── 📂 contexts/
+        │       │   ├── 📂 pages/
+        │       │   │   ├── 📄 CartPage.jsx
+        │       │   │   ├── 📄 CheckoutPage.jsx
+        │       │   │   ├── 📄 HomePage.jsx
+        │       │   │   ├── 📄 LoginPage.jsx
+        │       │   │   ├── 📄 PerfilPage.jsx
+        │       │   │   ├── 📄 ProductsPage.jsx
+        │       │   │   ├── � PurchaseHistoryPage.jsx
+        │       │   │   ├── 📄 RegisterPage.jsx
+        │       │   │   ├── 📄 SupplierDashboardPage.jsx
+        │       │   │   ├── 📄 UsuarioFormPage.jsx
+        │       │   │   └── 📄 UsuariosPage.jsx
+        │       │   ├── 📄 App.jsx
+        │       │   ├── 📄 index.css
+        │       │   └── 📄 main.jsx
+        │       ├── 📄 .env.example
+        │       ├── 📄 index.html
+        │       ├── 📄 package.json
+        │       ├── 📄 tailwind.config.js
+        │       └── 📄 vite.config.js
+        │
+        ├── 📂 Gestão Empresarial e Dinâmicas das Organizações/
+        ├── 📂 Projeto Interdisciplinar Programação Web/
+        └── 📂 Projetos em Banco de Dados/
+            ├── 📄 schema.sql
+            └── 📄 README.md
 </pre>
 
-### 📝 Descrição das Pastas:
+### 📝 Descrição das Pastas
 
-- **`Backend/`**: Código-fonte da API REST (Node.js + Express).
-- **`Backend/src/`**: Arquivos principais do servidor — conexão com o banco (`db.js`) e rotas CRUD (`server.js`).
-- **`banco de dados/`**: Script SQL de criação do banco e tabelas, além do modelo DER (MySQL Workbench).
-- **`Documentos/`**: Documentação do projeto, organizada por entregas e disciplinas.
+- **`Documentos/Entrega2/Desenvolvimento Web FullStack/Backend/`** — API REST com autenticação JWT, upload de imagens e CRUD completo.
+- **`Documentos/Entrega2/Desenvolvimento Web FullStack/Frontend/`** — SPA em React com rotas protegidas, carrinho e dashboard de fornecedor.
+- **`Documentos/Entrega2/Projetos em Banco de Dados/`** — Schema SQL atualizado e documentação do banco.
+- **`Documentos/Entrega1/`** — Primeira entrega do projeto (CRUD básico, DER inicial, documentações).
 
-## Informações sobre o MySQL
+## 🗄 Banco de Dados
 
-Nosso banco de dados conta com uma tabela principal que é a tabela de **usuários**, as tabelas de **administradores, fornecedores e clientes** tem conexão direta com a tabela usuário, servindo para definir qual será o tipo de usuário na tabela. Além disso tem as tabelas **anuncio e categoriaProduto**, fazem ligação direta com a tabela **fornecedor**, elas servem para guardar os anúncios feitos pelos fornecedores com todos os dados de cada um. Nosso banco também conta om uma tabela avaliação que será responsável por armazenar as notas que os clientes dão aos produtos dos anúncios. 
+> 📄 Documentação completa do banco de dados: [`Documentos/Entrega2/Projetos em Banco de Dados/README.md`](Documentos/Entrega2/Projetos%20em%20Banco%20de%20Dados/README.md)
+>
+> 📄 Script SQL de criação: [`Documentos/Entrega2/Projetos em Banco de Dados/schema.sql`](Documentos/Entrega2/Projetos%20em%20Banco%20de%20Dados/schema.sql)
 
-## Detalhamento do Projeto
+O banco **techfood** (MySQL) possui as seguintes tabelas:
 
-O projeto foi realizado de forma com que enaltecesse todos e ajudasse a se desenvolver<br><br>
-**`Fabrizzio Puttini`**: Criação do protótipo do site no Figma, finalização do Banco de Dados e do DER no MySQL;<br>
-**`Guilherme Belcastro`**: Criação da base do DER do Banco de Dados junto à Julia e exerceu uma função de corretor nas documentações do projeto;<br>
-**`Luiz Silvestre`**: Criação do Backend do Projeto - CRUD;<br>
-**`Julia Valério`**: Criação da base do DER do Banco de Dados junto ao Guilherme e criação da documentação de Gestão Empresarial;<br>
-**`Kaike Santos`**: Criação do Backlog e documentação à respeito do projeto, além da documentação de Cálculo II;<br>
+| Tabela | Descrição |
+|--------|-----------|
+| `usuario` | Dados base de todos os usuários (nome, email, senha hash, foto, tipo) |
+| `administrador` | Extensão para admins (nível de acesso) |
+| `comprador` | Extensão para compradores (CPF, CEP) |
+| `fornecedor` | Extensão para fornecedores (CNPJ, nome fantasia, descrição) |
+| `categoriaProduto` | Categorias dos produtos (Nozes, Castanhas, Amêndoas, etc.) |
+| `anuncio` | Anúncios de produtos dos fornecedores (título, preço, estoque) |
+| `avaliacao` | Avaliações dos compradores sobre anúncios (nota 1-5, comentário) |
+
+**Tipos de Usuário:** 1 = Administrador, 2 = Comprador, 3 = Fornecedor
+
+## 🔌 Rotas da API
+
+### Autenticação
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| `POST` | `/api/auth/register` | Registrar novo usuário (com upload de foto) | ❌ |
+| `POST` | `/api/auth/login` | Login (retorna token JWT) | ❌ |
+| `POST` | `/api/auth/forgot-password` | Recuperação de senha | ❌ |
+| `POST` | `/api/auth/logout` | Logout | ✅ |
+
+### Usuários
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| `GET` | `/api/usuarios` | Listar todos os usuários | ❌ |
+| `GET` | `/api/usuarios/profile` | Perfil do usuário logado | ✅ |
+| `GET` | `/api/usuarios/:id` | Buscar usuário por ID | ✅ |
+| `POST` | `/api/usuarios` | Criar usuário | ✅ |
+| `PUT` | `/api/usuarios/me` | Atualizar próprio perfil | ✅ |
+| `PUT` | `/api/usuarios/:id` | Atualizar usuário por ID | ✅ |
+| `DELETE` | `/api/usuarios/:id` | Deletar usuário | ✅ |
+
+### Produtos
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| `GET` | `/api/produtos` | Listar todos os produtos | ❌ |
+| `GET` | `/api/produtos/:id` | Buscar produto por ID | ❌ |
+| `POST` | `/api/produtos` | Criar produto (com imagem) | ✅ |
+| `PUT` | `/api/produtos/:id` | Atualizar produto | ✅ |
+| `DELETE` | `/api/produtos/:id` | Deletar produto | ✅ |
+
+### Categorias
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| `GET` | `/api/categorias` | Listar categorias | ❌ |
+| `POST` | `/api/categorias` | Criar categoria | ✅ |
+
+### Carrinho
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| `GET` | `/api/carrinho` | Ver carrinho do usuário | ✅ |
+| `POST` | `/api/carrinho` | Adicionar item ao carrinho | ✅ |
+| `PUT` | `/api/carrinho/:idCarrinho` | Atualizar quantidade | ✅ |
+| `DELETE` | `/api/carrinho/:idCarrinho` | Remover item | ✅ |
+| `DELETE` | `/api/carrinho` | Limpar carrinho | ✅ |
+
+### Pedidos
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| `GET` | `/api/pedidos` | Listar pedidos do usuário | ✅ |
+| `GET` | `/api/pedidos/:id` | Detalhes de um pedido | ✅ |
+| `POST` | `/api/pedidos` | Criar pedido (checkout) | ✅ |
+| `PUT` | `/api/pedidos/:id/status` | Atualizar status do pedido | ✅ |
 
 ## 💻 Configuração para Desenvolvimento
 
@@ -81,9 +212,8 @@ O projeto foi realizado de forma com que enaltecesse todos e ajudasse a se desen
 
 - <a href="https://nodejs.org/">Node.js</a> (v18 ou superior)
 - <a href="https://dev.mysql.com/downloads/installer/">MySQL Server</a> (v8.0 ou superior)
-- <a href="https://www.postman.com/downloads/">Postman</a> (para testar as rotas)
 
-### Instalação
+### Instalação do Backend
 
 1. Clone o repositório:
 
@@ -91,81 +221,118 @@ O projeto foi realizado de forma com que enaltecesse todos e ajudasse a se desen
 git clone https://github.com/2026-1-MCC2/Projeto1
 ```
 
-2. Crie o banco de dados no MySQL executando o script:
+2. Acesse a pasta do Backend (Entrega 2):
 
 ```sh
-banco de dados/BD projeto.sql
+cd Documentos/Entrega2/Desenvolvimento\ Web\ FullStack/Backend
 ```
 
-3. Acesse a pasta do Backend e instale as dependências:
+3. Instale as dependências:
 
 ```sh
-cd Backend
 npm install
 ```
 
-4. Crie o arquivo `.env` baseado no `.env.example`:
+4. Crie o banco de dados no MySQL executando o script:
+
+```sql
+-- Execute o arquivo BD projeto.sql no MySQL Workbench ou terminal
+source BD\ projeto.sql
+```
+
+5. Crie o arquivo `.env` baseado no `.env.example`:
 
 ```sh
 cp .env.example .env
 ```
 
-5. Edite o `.env` com suas credenciais do MySQL:
+6. Edite o `.env` com suas credenciais:
 
 ```
+PORT=3000
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=sua_senha_aqui
 DB_DATABASE=techfood
 DB_PORT=3306
+JWT_SECRET=sua_chave_secreta_aqui
+JWT_EXPIRES=1h
 ```
 
-6. Inicie o servidor:
+7. Inicie o servidor:
 
 ```sh
 npm run dev
 ```
 
-O servidor estará rodando em `http://localhost:3000`.
+O backend estará rodando em `http://localhost:3000`.
 
-## � Rotas da API
+### Instalação do Frontend
 
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `POST` | `/usuarios` | Criar um novo usuário |
-| `GET` | `/usuarios` | Listar todos os usuários |
-| `GET` | `/usuarios/:id` | Buscar usuário por ID |
-| `PUT` | `/usuarios/:id` | Atualizar usuário por ID |
-| `DELETE` | `/usuarios/:id` | Deletar usuário por ID |
+1. Acesse a pasta do Frontend:
 
-### Exemplo de Body (POST/PUT):
-
-```json
-{
-  "tipoUsuario": 1,
-  "nomeUsuario": "João Silva",
-  "email": "joao@email.com",
-  "senha": "123456",
-  "contato": "11999999999"
-}
+```sh
+cd Documentos/Entrega2/Desenvolvimento\ Web\ FullStack/Frontend
 ```
 
-## 🗄 Banco de Dados
+2. Instale as dependências:
 
-O banco **techfood** possui as seguintes tabelas:
+```sh
+npm install
+```
 
-- **`usuario`** — Dados base de todos os usuários
-- **`administrador`** — Extensão para admins
-- **`comprador`** — Extensão para compradores (CPF, CEP)
-- **`fornecedor`** — Extensão para fornecedores (CNPJ, nome fantasia)
-- **`categoriaProduto`** — Categorias dos produtos
-- **`anuncio`** — Anúncios de produtos dos fornecedores
-- **`avaliacao`** — Avaliações dos compradores sobre anúncios
+3. Crie o arquivo `.env`:
+
+```sh
+cp .env.example .env
+```
+
+4. Verifique as variáveis:
+
+```
+VITE_API_URL=http://localhost:3000/api
+VITE_UPLOADS_URL=http://localhost:3000
+```
+
+5. Inicie o servidor de desenvolvimento:
+
+```sh
+npm run dev
+```
+
+O frontend estará rodando em `http://localhost:5173`.
+
+## 📱 Funcionalidades
+
+- **Autenticação** — Registro, login e logout com JWT
+- **Perfil** — Edição de dados e foto de perfil
+- **Catálogo de Produtos** — Listagem com filtros e paginação
+- **Carrinho de Compras** — Adicionar, remover e atualizar quantidades
+- **Checkout** — Finalização de pedidos
+- **Histórico de Compras** — Visualização de pedidos anteriores
+- **Dashboard do Fornecedor** — Gestão de produtos/anúncios
+- **Painel Admin** — Gestão de usuários (CRUD completo)
+- **Upload de Imagens** — Fotos de perfil e imagens de produtos
+- **Rotas Protegidas** — Acesso por tipo de usuário (Admin, Comprador, Fornecedor)
+
+## 👥 Detalhamento do Projeto
+
+| Integrante | Contribuições |
+|------------|---------------|
+| **Fabrizzio Puttini** | Protótipo no Figma, finalização do Banco de Dados e DER |
+| **Guilherme Belcastro** | Base do DER junto à Julia, revisão das documentações |
+| **Luiz Silvestre** | Desenvolvimento do Backend e Frontend fullstack |
+| **Julia Valério** | Base do DER junto ao Guilherme, documentação de Gestão Empresarial |
+| **Kaike Santos** | Backlog, documentação do projeto e documentação de Cálculo II |
+
+## Banco de Dados 
+A documentação completa das tabelas, relacionamentos e o script SQL podem ser encontrados no link abaixo: [Acesse a Documentação do Banco de Dados aqui](https://github.com/2026-1-MCC2/Projeto1/tree/main/Documentos/Entrega2/Projetos%20em%20Banco%20de%20Dados)](./BD/README.md)
 
 ---
-## 📋 Licença/License
 
-<p xmlns:cc="http://creativecommons.org/ns#" >Este trabalho está licenciado sob <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer">CC BY 4.0</a></p>
+## 📋 Licença
+
+<p xmlns:cc="http://creativecommons.org/ns#">Este trabalho está licenciado sob <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer">CC BY 4.0</a></p>
 
 ## 🎓 Referências
 
@@ -175,3 +342,7 @@ O banco **techfood** possui as seguintes tabelas:
 4. <https://www.toptal.com/developers/gitignore>
 5. <https://expressjs.com/>
 6. <https://www.npmjs.com/package/mysql2>
+7. <https://react.dev/>
+8. <https://vitejs.dev/>
+9. <https://tailwindcss.com/>
+10. <https://jwt.io/>
